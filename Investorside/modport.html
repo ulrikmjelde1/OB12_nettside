@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>Evig investeringstjenester</title>
+</head>
+
+<body>
+
+    <!-- Navigation bar-->
+    <div class="navbar">
+        <a href="landing.html" class="active">Hjem</a>
+        <a href="modport.html">Modellportefølje</a>
+    </div>
+
+    <!-- Modellportefølje med 10 anbefalte aksjer -->
+    <div class="intro-section">
+        <h2">Her finner du mine 10 utvalgte norske aksjer. Modellporteføljen vurderes fortløpende med sporadiske rebalanseringer, som vurderes minst månedlig. Analyse og begrunnelse av hvert av selskapene som inngår finner du ved å trykke på aksjenavnet.</h2>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-section">
+        <h2>Porteføljens seleksjon i dag</h2>
+        <table id="portfolioTable" border="1">
+            <thead>
+                <tr>
+                    <th>Aksje</th>
+                    <th>Ticker</th>
+                    <th>Vekting</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function loadPortfolioData() {
+            const tableBody = document.getElementById('portfolioTable').getElementsByTagName('tbody')[0];
+    
+            // Create a unique URL by appending a query string with a timestamp
+            const url = 'InvestmentData.txt?v=' + new Date().getTime();
+    
+            // Fetch the text file
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Clear the existing table data
+                    tableBody.innerHTML = "";
+    
+                    // Split the file content into lines
+                    const lines = data.trim().split('\n');
+    
+                    // Iterate over each line and create a row in the table
+                    lines.forEach(line => {
+                        const row = document.createElement('tr');
+    
+                        // Split the line by the tab character (assuming tab-separated values)
+                        const cells = line.split('\t');
+    
+                        cells.forEach(cellText => {
+                            const cell = document.createElement('td');
+                            cell.textContent = cellText;
+                            row.appendChild(cell);
+                        });
+    
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error loading the portfolio data:', error));
+        }
+    
+        // Load the data when the page loads
+        window.onload = loadPortfolioData;
+    </script>
+    
+</body>
+</html>

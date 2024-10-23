@@ -1,0 +1,143 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center; /* Center all text elements */
+}
+
+/* Navigation bar */
+.navbar {
+    background-color: #0a37b3;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar a {
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar a:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+/* Introduction section */
+.intro-section {
+    background-color: #fff;
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.intro-section h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.intro-section p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Blog posts section */
+.blog-posts {
+    padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.blog-posts h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Individual blog post preview */
+.blog-post {
+    background-color: #fff;
+    width: 80%; /* Set a fixed width for blog posts */
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: left; /* Align text to the left within the post */
+    transition: box-shadow 0.3s ease;
+}
+
+.blog-post:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-post h3 {
+    font-size: 24px;
+    margin-top: 0;
+    color: #333;
+}
+
+.blog-post p {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.blog-post a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.blog-post a:hover {
+    color: #0056b3;
+}
+
+/* Date styling */
+.blog-post .post-date {
+    font-size: 12px;
+    color: #aaa;
+    text-align: right;
+}
+
+/* Full blog post page styling */
+.blog-post-full {
+    width: 80%; /* Set a fixed width for blog posts */
+    max-width: 800px;
+    padding: 40px;
+    background-color: #fff;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left within the post */
+}
+
+.blog-post-full h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.blog-post-full p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #555;
+}
+
+.blog-post-full .post-date {
+    font-size: 14px;
+    color: #888;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    text-align: right;
+}

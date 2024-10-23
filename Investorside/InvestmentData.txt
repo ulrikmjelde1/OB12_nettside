@@ -1,0 +1,9 @@
+Norsk Hydro	NHY	0,1
+Equinor	EQNR	0,1
+Crayon Group	CRAYN	0,1
+DNB	DNB	0,1
+Sparebanken Vest	SVEG	0,1
+TGS	TGS	0,01
+Kongsberg Gruppen	KOG	0,1
+Scatec Solar	SCATC	0,1
+Salmar	SALM	0,1

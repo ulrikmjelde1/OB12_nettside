@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pensjonskalkulator - PF Tools by Ulrik Mjelde</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .menu {
+            background-color: #022c9e;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .menu a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu a:hover {
+            background-color: #cde4f1;
+            color: black;
+        }
+        .content {
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-container .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-container input::placeholder {
+            color: #bbb;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #555;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the icon */
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #022c9e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #011a6f;
+        }
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .toggle-buttons button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #022c9e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .toggle-buttons button:hover {
+            background-color: #011a6f;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('menu.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.body.insertAdjacentHTML('afterbegin', data);
+                })
+                .catch(error => console.error('Error loading menu:', error));
+        });
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function calculateRetirement() {
+            try {
+                const startCapital = parseFloat(document.getElementById('start-capital').value) || 0;
+                const yearsUntilRetirement = parseInt(document.getElementById('years-until-retirement').value) || 0;
+                const annualGrowthRate = parseFloat(document.getElementById('annual-growth-rate').value) / 100 || 0;
+                const retirementGrowthRate = parseFloat(document.getElementById('retirement-growth-rate').value) / 100 || 0;
+                const yearsOfPayout = parseInt(document.getElementById('years-of-payout').value) || 0;
+
+                console.log(`Start Capital: ${startCapital}`);
+                console.log(`Years Until Retirement: ${yearsUntilRetirement}`);
+                console.log(`Annual Growth Rate: ${annualGrowthRate}`);
+                console.log(`Retirement Growth Rate: ${retirementGrowthRate}`);
+                console.log(`Years of Payout: ${yearsOfPayout}`);
+
+                let monthlyContribution = 0;
+
+                const simpleFieldsVisible = !document.getElementById('simple-fields').classList.contains('hidden');
+                if (simpleFieldsVisible) {
+                    monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+                    console.log(`Monthly Contribution (Simple): ${monthlyContribution}`);
+                } else {
+                    const annualSalary = parseFloat(document.getElementById('annual-salary').value) || 0;
+                    const rateUpTo7G = parseFloat(document.getElementById('rate-up-to-7G').value) / 100 || 0;
+                    const rateUpTo12G = parseFloat(document.getElementById('rate-up-to-12G').value) / 100 || 0;
+                    const salaryGrowth = document.getElementById('salary-growth-yes').checked;
+                    let salaryGrowthYears = 0;
+                    let salaryGrowthRate = 0;
+
+                    console.log(`Annual Salary: ${annualSalary}`);
+                    console.log(`Rate Up To 7G: ${rateUpTo7G}`);
+                    console.log(`Rate Up To 12G: ${rateUpTo12G}`);
+                    console.log(`Salary Growth: ${salaryGrowth}`);
+
+                    if (salaryGrowth) {
+                        salaryGrowthYears = parseInt(document.getElementById('salary-growth-years').value) || 0;
+                        salaryGrowthRate = parseFloat(document.getElementById('salary-growth-rate').value) / 100 || 0;
+                        console.log(`Salary Growth Years: ${salaryGrowthYears}`);
+                        console.log(`Salary Growth Rate: ${salaryGrowthRate}`);
+                    }
+
+                    let salary = annualSalary;
+                    let totalMonthlyContribution = 0;
+
+                    for (let i = 0; i < yearsUntilRetirement * 12; i++) {
+                        const salaryUpTo7G = Math.min(salary, 880598);
+                        const salaryUpTo12G = Math.min(Math.max(salary - 880598, 0), 1488336 - 880598);
+
+                        totalMonthlyContribution += (salaryUpTo7G * rateUpTo7G + salaryUpTo12G * rateUpTo12G) / 12;
+
+                        if ((i + 1) % 12 === 0 && (i + 1) / 12 < salaryGrowthYears) {
+                            salary *= 1 + salaryGrowthRate;
+                            console.log(`Updated Salary after ${i + 1} months: ${salary}`);
+                        }
+                    }
+
+                    monthlyContribution = totalMonthlyContribution / (yearsUntilRetirement * 12);
+                    console.log(`Monthly Contribution (Advanced): ${monthlyContribution}`);
+                }
+
+                let result = startCapital;
+                const monthlyGrowthRate = Math.pow(1 + annualGrowthRate, 1 / 12) - 1;
+                console.log(`Monthly Growth Rate: ${monthlyGrowthRate}`);
+
+                for (let i = 0; i < yearsUntilRetirement * 12; i++) {
+                    result = result * (1 + monthlyGrowthRate) + monthlyContribution;
+                }
+                console.log(`Total Estimated Pension: ${result}`);
+
+                const monthlyRetirementGrowthRate = Math.pow(1 + retirementGrowthRate, 1 / 12) - 1;
+                const numberOfPayments = yearsOfPayout * 12;
+                const monthlyPayments = result * (monthlyRetirementGrowthRate / (1 - Math.pow(1 + monthlyRetirementGrowthRate, -numberOfPayments)));
+                console.log(`Monthly Payments as Pensioner: ${monthlyPayments}`);
+
+                document.getElementById('result').innerHTML = `
+                    <p>Estimert pensjonsbeløp: ${formatNumber(result.toFixed(2))} kr</p>
+                    <p>Månedlig utbetaling som pensjonist: ${formatNumber(monthlyPayments.toFixed(2))} kr</p>
+                `;
+            } catch (error) {
+                console.error('Error calculating retirement:', error);
+            }
+        }
+
+        function toggleCalculator(type) {
+            const simpleFields = document.getElementById('simple-fields');
+            const advancedFields = document.getElementById('advanced-fields');
+            const simpleFieldsRequired = document.querySelectorAll('#simple-fields input');
+            const advancedFieldsRequired = document.querySelectorAll('#advanced-fields input');
+
+            if (type === 'simple') {
+                simpleFields.classList.remove('hidden');
+                advancedFields.classList.add('hidden');
+                simpleFieldsRequired.forEach(input => input.setAttribute('required', true));
+                advancedFieldsRequired.forEach(input => input.removeAttribute('required'));
+            } else {
+                simpleFields.classList.add('hidden');
+                advancedFields.classList.remove('hidden');
+                advancedFieldsRequired.forEach(input => input.setAttribute('required', true));
+                simpleFieldsRequired.forEach(input => input.removeAttribute('required'));
+            }
+        }
+
+        function toggleSalaryGrowthFields(choice) {
+            const salaryGrowthFields = document.getElementById('salary-growth-fields');
+            if (choice === 'yes') {
+                salaryGrowthFields.classList.remove('hidden');
+                document.getElementById('salary-growth-years').setAttribute('required', true);
+                document.getElementById('salary-growth-rate').setAttribute('required', true);
+            } else {
+                salaryGrowthFields.classList.add('hidden');
+                document.getElementById('salary-growth-years').removeAttribute('required');
+                document.getElementById('salary-growth-rate').removeAttribute('required');
+            }
+        }
+
+        function updateSalaryGrowthLabel() {
+            const yearsField = document.getElementById('salary-growth-years');
+            const growthRateLabel = document.getElementById('salary-growth-rate-label');
+            const years = yearsField.value || '{x}';
+            growthRateLabel.textContent = `Forventet årlig lønnsvekst de neste ${years} årene`;
+        }
+    </script>
+</head>
+<body>
+    <div class="content">
+        <div class="form-container">
+            <div class="toggle-buttons">
+                <button type="button" onclick="toggleCalculator('simple')">Enkel</button>
+                <button type="button" onclick="toggleCalculator('advanced')">Avansert</button>
+            </div>
+            <h2>Pensjonskalkulator</h2>
+            <form id="retirement-form" onsubmit="event.preventDefault(); calculateRetirement();">
+                <div id="simple-fields">
+                    <label for="start-capital" class="input-group">
+                        Startkapital:
+                        <div class="tooltip">?
+                            <span class="tooltiptext">Her legger du inn hvor mye du har i oppspart innskuddspensjon i dag. Dette kan være oppspart pensjon fra nåværende eller tidligere arbeidsgiver eller private innskudd du har gjort selv. Summen av disse legges inn.</span>
+                        </div>
+                    </label>
+                    <input type="number" id="start-capital" name="start-capital" required>
+
+                    <label for="years-until-retirement">År til pensjonering:</label>
+                    <input type="number" id="years-until-retirement" name="years-until-retirement" required>
+
+                    <label for="annual-growth-rate" class="input-group">
+                        Årlig forventet avkastning:
+                        <div class="tooltip">?
+                            <span class="tooltiptext">Årlig forventet avkastning er den løpende avkastningen i prosent du forventer å tjene på pensjonsmidlene dine i snitt frem til du pensjonerer deg. Rentenivåer varierer over tid, men obligasjonsfond har en forventet avkastning på 3-5% i året. Den brede norske aksjeindeksen har i snitt gitt rundt 7,5% i året historisk. Tenk også på at når du nærmer deg pensjonsalder er det anbefalt å vekte ned aksjeandelen i porteføljen din, slik at forventet avkastning vil gå noe ned.</span>
+                        </div>
+                    </label>
+                    <input type="number" id="annual-growth-rate" name="annual-growth-rate" placeholder="for eksempel 7%" required>
+
+                    <label for="monthly-contribution">Månedlig innskudd:</label>
+                    <input type="number" id="monthly-contribution" name="monthly-contribution" required>
+
+                    <label for="retirement-growth-rate">Årlig avkastning som pensjonist:</label>
+                    <input type="number" id="retirement-growth-rate" name="retirement-growth-rate" placeholder="F.eks. en moderat rente på 3%" required>
+
+                    <label for="years-of-payout">Antall år du ønsker utbetalinger:</label>
+                    <input type="number" id="years-of-payout" name="years-of-payout" required>
+                </div>
+
+                <div id="advanced-fields" class="hidden">
+                    <label for="start-capital" class="input-group">
+                        Startkapital:
+                        <div class="tooltip">?
+                            <span class="tooltiptext">Her legger du inn hvor mye du har i oppspart innskuddspensjon i dag. Dette kan være oppspart pensjon fra nåværende eller tidligere arbeidsgiver eller private innskudd du har gjort selv. Summen av disse legges inn.</span>
+                        </div>
+                    </label>
+                    <input type="number" id="start-capital" name="start-capital">
+
+                    <label for="years-until-retirement">År til pensjonering:</label>
+                    <input type="number" id="years-until-retirement" name="years-until-retirement">
+
+                    <label for="annual-growth-rate" class="input-group">
+                        Årlig forventet avkastning:
+                        <div class="tooltip">?
+                            <span class="tooltiptext">Årlig forventet avkastning er den løpende avkastningen i prosent du forventer å tjene på pensjonsmidlene dine i snitt frem til du pensjonerer deg. Rentenivåer varierer over tid, men obligasjonsfond har en forventet avkastning på 3-5% i året. Den brede norske aksjeindeksen har i snitt gitt rundt 7,5% i året historisk. Tenk også på at når du nærmer deg pensjonsalder er det anbefalt å vekte ned aksjeandelen i porteføljen din, slik at forventet avkastning vil gå noe ned.</span>
+                        </div>
+                    </label>
+                    <input type="number" id="annual-growth-rate" name="annual-growth-rate" placeholder="for eksempel 7%">
+
+                    <label for="annual-salary">Årlig lønn:</label>
+                    <input type="number" id="annual-salary" name="annual-salary">
+
+                    <label for="rate-up-to-7G">Sats innskudd på lønn inntil 7.1G:</label>
+                    <input type="number" id="rate-up-to-7G" name="rate-up-to-7G" min="2" max="7" step="0.1">
+
+                    <label for="rate-up-to-12G">Sats innskudd på lønn inntil 12G:</label>
+                    <input type="number" id="rate-up-to-12G" name="rate-up-to-12G" min="2" max="18.1" step="0.1">
+
+                    <label for="retirement-growth-rate">Årlig avkastning som pensjonist:</label>
+                    <input type="number" id="retirement-growth-rate" name="retirement-growth-rate" placeholder="F.eks. en moderat rente på 3%">
+
+                    <label for="years-of-payout">Antall år du ønsker utbetalinger:</label>
+                    <input type="number" id="years-of-payout" name="years-of-payout">
+
+                    <div class="input-group">
+                        <label>Forventer du lønnsvekst de neste årene?</label>
+                        <button type="button" id="salary-growth-yes" onclick="toggleSalaryGrowthFields('yes')">Ja</button>
+                        <button type="button" id="salary-growth-no" onclick="toggleSalaryGrowthFields('no')">Nei</button>
+                    </div>
+
+                    <div id="salary-growth-fields" class="hidden">
+                        <label for="salary-growth-years">Hvor mange år frem i tid forventer du lønnsveksten (Utover inflasjon)?</label>
+                        <input type="number" id="salary-growth-years" name="salary-growth-years" oninput="updateSalaryGrowthLabel()">
+
+                        <label for="salary-growth-rate" id="salary-growth-rate-label">Forventet årlig lønnsvekst de neste {x} årene</label>
+                        <input type="number" id="salary-growth-rate" name="salary-growth-rate">
+                    </div>
+                </div>
+
+                <button type="submit">Beregn</button>
+            </form>
+            <div id="result"></div>
+        </div>
+    </div>
+</body>
+</html>
