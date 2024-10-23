@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Evig Modellportefølje</title>
-        <style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OB12 KAPITAL AS</title>
+    <style>
         body {
             margin: 0; /* Remove default margin */
             padding: 0; /* Remove default padding */
@@ -19,7 +19,7 @@
         }
         .menu a {
             display: block;
-            color: rgb(240, 23, 23);
+            color: white;
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
@@ -42,8 +42,23 @@
         .intro h2 {
             margin-top: 0;
         }
-
-
-        </style>
-    </head>
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('menu.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.body.insertAdjacentHTML('afterbegin', data);
+                })
+                .catch(error => console.error('Error loading menu:', error));
+        });
+    </script>
+</head>
+<body>
+    <div class="content">
+        <div class="intro">
+            <h2>Her vil det komme løpende oppdateringer på porteføljen, som viser avkastning og vekting mot aktivaklasser.</h2>
+        </div>
+    </div>
+</body>
 </html>
