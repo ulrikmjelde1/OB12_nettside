@@ -1,0 +1,28 @@
+name: Fetch FX Data Hourly
+
+# Define when the workflow should run
+on:
+  schedule:
+    # Cron format for every hour from 8 a.m. to 11 p.m. Norwegian time
+    - cron: '0 6-21 * * *'  # Every hour from 6 a.m. to 9 p.m. UTC (equivalent to 8 a.m. to 11 p.m. Norwegian time)
+
+jobs:
+  fetch_data:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Checkout your repository
+
+    - name: Set up Python
+      uses: actions/setup-python@v2  # Set up a Python environment
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install requests pandas
+
+    - name: Run the fetch script
+      run: python path/to/your_script.py  # Replace with the actual path to your script
+
