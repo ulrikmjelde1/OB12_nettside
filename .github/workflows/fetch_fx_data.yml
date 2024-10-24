@@ -5,7 +5,7 @@ on:
   schedule:
     # Cron format for every hour from 8 a.m. to 11 p.m. Norwegian time
     - cron: '0 6-21 * * *'  # Every hour from 6 a.m. to 9 p.m. UTC (equivalent to 8 a.m. to 11 p.m. Norwegian time)
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   fetch_data:
