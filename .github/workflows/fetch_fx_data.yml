@@ -24,5 +24,15 @@ jobs:
         pip install requests pandas
 
     - name: Run the fetch script
-      run: python FX_data.py  # Replace with the actual path to your script
+      run: python FX_data.py  # Run your script
 
+    - name: Commit changes
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git add fx_data.json
+        git commit -m "Update FX data via GitHub Actions"
+        git push
+      env:
+        # GitHub token to authorize the commit
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
