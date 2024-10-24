@@ -117,8 +117,8 @@
                     if (headerRow) {
                         const th1 = document.createElement('th');
                         const th2 = document.createElement('th');
-                        th1.innerText = info.from_currency + '/' + info.to_currency;
-                        th2.innerText = 'Exchange Rate';
+                        th1.innerText = 'Valutapar' //info.from_currency + '/' + info.to_currency;
+                        th2.innerText = 'Siste vekslingskurs';
                         headerRow.appendChild(th1);
                         headerRow.appendChild(th2);
                     } else {
@@ -146,7 +146,7 @@
 <body>
     <div class="content">
         <div class="intro">
-            <p>Testing av valutakurser på denne siden</p>
+            <p>Her kommer utvagte oppdaterte kurser</p>
         </div>
         <!-- Table for displaying FX data -->
         <table class="fx-table">
