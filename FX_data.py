@@ -10,7 +10,10 @@ BASE_URL = 'https://www.alphavantage.co/query'
 CURRENCY_PAIRS = [
     ('USD', 'NOK'),
     ('GBP', 'USD'),
-    ('GBP', 'NOK')
+    ('GBP', 'NOK'),
+    ('DKK', 'NOK'),
+    ('SEK', 'NOK'),
+    ('EUR', 'NOK')
 ]
 
 def fetch_fx_data():
