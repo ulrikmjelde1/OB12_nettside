@@ -60,9 +60,14 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed.');
+
             // Load the menu from a separate file
             fetch('menu.html')
-                .then(response => response.text())
+                .then(response => {
+                    console.log('Menu fetch status:', response.status);
+                    return response.text();
+                })
                 .then(data => {
                     document.body.insertAdjacentHTML('afterbegin', data);
                 })
@@ -70,8 +75,15 @@
 
             // Fetch FX data from the JSON file
             fetch('fx_data.json')
-                .then(response => response.json())
+                .then(response => {
+                    console.log('FX data fetch status:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('FX data fetched successfully:', data);
                     // Populate the table with FX data
                     populateFXTable(data);
                 })
@@ -82,6 +94,12 @@
         function populateFXTable(data) {
             const tableBody = document.getElementById('fx-table-body');
 
+            // Check if the table body exists
+            if (!tableBody) {
+                console.error('Table body element not found');
+                return;
+            }
+
             // Clear existing rows (if any)
             tableBody.innerHTML = '';
 
@@ -90,15 +108,22 @@
                 const info = data[pair];
                 const row = document.createElement('tr');
 
+                // Log the data being processed
+                console.log('Processing data for:', info);
+
                 // Add the currency pair column names as headers
                 if (tableBody.rows.length === 0) {
                     const headerRow = document.getElementById('fx-table-header');
-                    const th1 = document.createElement('th');
-                    const th2 = document.createElement('th');
-                    th1.innerText = info.from_currency + '/' + info.to_currency;
-                    th2.innerText = 'Exchange Rate';
-                    headerRow.appendChild(th1);
-                    headerRow.appendChild(th2);
+                    if (headerRow) {
+                        const th1 = document.createElement('th');
+                        const th2 = document.createElement('th');
+                        th1.innerText = info.from_currency + '/' + info.to_currency;
+                        th2.innerText = 'Exchange Rate';
+                        headerRow.appendChild(th1);
+                        headerRow.appendChild(th2);
+                    } else {
+                        console.error('Header row element not found');
+                    }
                 }
 
                 // Create cells for currency pair and exchange rate

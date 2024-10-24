@@ -1,0 +1,16 @@
+{
+    "USD_NOK": {
+        "from_currency": "USD",
+        "to_currency": "NOK",
+        "exchange_rate": "10.95920000",
+        "last_refreshed": "2024-10-24 16:01:02",
+        "time_zone": "UTC"
+    },
+    "GBP_USD": {
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "exchange_rate": "1.29640000",
+        "last_refreshed": "2024-10-24 16:01:02",
+        "time_zone": "UTC"
+    }
+}
