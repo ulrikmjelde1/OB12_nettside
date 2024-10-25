@@ -37,7 +37,7 @@ def fetch_fx_data():
                 rate_info = {
                     'from_currency': fx_rate['1. From_Currency Code'],
                     'to_currency': fx_rate['3. To_Currency Code'],
-                    'exchange_rate': fx_rate['5. Exchange Rate'],
+                    'exchange_rate': fx_rate['5. Exchange Rate'][:6],
                     'last_refreshed': fx_rate['6. Last Refreshed'],
                     'time_zone': fx_rate['7. Time Zone']
                 }
