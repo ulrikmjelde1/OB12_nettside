@@ -118,10 +118,13 @@
                     if (headerRow) {
                         const th1 = document.createElement('th');
                         const th2 = document.createElement('th');
+                        const th3 = document.createElement('th');
                         th1.innerText = 'Valutapar' //info.from_currency + '/' + info.to_currency;
                         th2.innerText = 'Siste vekslingskurs';
+                        th3.innerText = 'Sist oppdatert';
                         headerRow.appendChild(th1);
                         headerRow.appendChild(th2);
+                        headerRow.appendChild(th3);
                     } else {
                         console.error('Header row element not found');
                     }
@@ -134,9 +137,13 @@
                 const cell2 = document.createElement('td');
                 cell2.innerText = info.exchange_rate;
 
+                const cell3 = document.createElement('td');
+                cell2.innerText = info.last_refreshed;
+
                 // Append cells to the row
                 row.appendChild(cell1);
                 row.appendChild(cell2);
+                row.appendChild(cell3);
 
                 // Add the row to the table body
                 tableBody.appendChild(row);

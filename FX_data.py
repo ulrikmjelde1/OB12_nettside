@@ -17,7 +17,7 @@ CURRENCY_PAIRS = [
 ]
 
 def fetch_fx_data():
-    fx_data = {}  # Initialize fx_data here to ensure it's available throughout the function
+    fx_data = {}  # Fill the dict with data through the function
     for base, target in CURRENCY_PAIRS:
         params = {
             'function': 'CURRENCY_EXCHANGE_RATE',
