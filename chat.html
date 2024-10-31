@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Chat with Firebase</title>
+</head>
+<body>
+  <div id="auth-container">
+    <h2>Login to Chat</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <button onclick="signUp()">Sign Up</button>
+    <button onclick="logout()">Logout</button>
+    <p id="auth-status"></p>
+  </div>
+
+  <div id="chat-container" style="display: none;">
+    <h2>Chat Room</h2>
+    <div id="messages" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px;">
+      <!-- Messages will appear here -->
+    </div>
+    <input type="text" id="message-input" placeholder="Type your message" style="width: 80%;">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCq3qHPTNlZBUMTudlrfgDqIWU9etYcESQ",
+      authDomain: "ob12-nettside.firebaseapp.com",
+      projectId: "ob12-nettside",
+      storageBucket: "ob12-nettside.appspot.com",
+      messagingSenderId: "106831696001",
+      appId: "1:106831696001:web:cd097999c7963aa3f9fd80"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Authentication Functions
+    async function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        document.getElementById('auth-status').innerText = "Sign up successful!";
+      } catch (error) {
+        document.getElementById('auth-status').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        document.getElementById('auth-status').innerText = "Logged in!";
+      } catch (error) {
+        document.getElementById('auth-status').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    async function logout() {
+      try {
+        await signOut(auth);
+        document.getElementById('auth-status').innerText = "Logged out!";
+      } catch (error) {
+        document.getElementById('auth-status').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    // Listen for authentication state changes
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById('auth-container').style.display = "none";
+        document.getElementById('chat-container').style.display = "block";
+        listenForMessages();
+      } else {
+        document.getElementById('auth-container').style.display = "block";
+        document.getElementById('chat-container').style.display = "none";
+      }
+    });
+
+    // Send a message
+    async function sendMessage() {
+      const messageInput = document.getElementById('message-input');
+      const messageText = messageInput.value;
+
+      if (messageText.trim() !== "") {
+        await addDoc(collection(db, "messages"), {
+          text: messageText,
+          userId: auth.currentUser.uid,
+          timestamp: serverTimestamp()
+        });
+        messageInput.value = ""; // Clear input field after sending
+      }
+    }
+
+    // Listen for new messages in real time
+    function listenForMessages() {
+      const messagesContainer = document.getElementById("messages");
+
+      const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
+      onSnapshot(q, snapshot => {
+        messagesContainer.innerHTML = ""; // Clear messages
+
+        snapshot.forEach(doc => {
+          const message = doc.data();
+          const messageElement = document.createElement("p");
+          messageElement.textContent = `${message.text}`;
+          messagesContainer.appendChild(messageElement);
+        });
+
+        // Scroll to the bottom of the messages container to show the latest message
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
+    }
+  </script>
+</body>
+</html>
