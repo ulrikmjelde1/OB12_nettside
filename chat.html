@@ -46,20 +46,8 @@
     const db = getFirestore(app);
 
     // Authentication Functions
-    async function signUp() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        document.getElementById('auth-status').innerText = "Sign up successful!";
-    } catch (error) {
-        console.error("Sign up error:", error); // Log error to the console
-        document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-    }
-    }
-
-
-    async function login() {
+    // Make the functions globally accessible
+    window.login = async function() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
@@ -71,17 +59,30 @@
         console.error("Login error:", error); // Log error to console
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
     }
+    };
+
+    window.signUp = async function() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        document.getElementById('auth-status').innerText = "Sign up successful!";
+    } catch (error) {
+        console.error("Sign up error:", error);
+        document.getElementById('auth-status').innerText = `Error: ${error.message}`;
     }
+    };
 
-
-    async function logout() {
-      try {
+    window.logout = async function() {
+    try {
         await signOut(auth);
         document.getElementById('auth-status').innerText = "Logged out!";
-      } catch (error) {
+    } catch (error) {
+        console.error("Logout error:", error);
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-      }
     }
+    };
+
 
     // Listen for authentication state changes
     onAuthStateChanged(auth, user => {
