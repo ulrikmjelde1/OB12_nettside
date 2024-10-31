@@ -26,10 +26,12 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/latest/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  </script>
 
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCq3qHPTNlZBUMTudlrfgDqIWU9etYcESQ",
       authDomain: "ob12-nettside.firebaseapp.com",
@@ -58,15 +60,19 @@
 
 
     async function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("User logged in:", userCredential.user); // Log user details on successful login
         document.getElementById('auth-status').innerText = "Logged in!";
-      } catch (error) {
+    } catch (error) {
+        console.error("Login error:", error); // Log error to console
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-      }
     }
+    }
+
 
     async function logout() {
       try {
