@@ -45,15 +45,17 @@
 
     // Authentication Functions
     async function signUp() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      try {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    try {
         await createUserWithEmailAndPassword(auth, email, password);
         document.getElementById('auth-status').innerText = "Sign up successful!";
-      } catch (error) {
+    } catch (error) {
+        console.error("Sign up error:", error); // Log error to the console
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-      }
     }
+    }
+
 
     async function login() {
       const email = document.getElementById('email').value;
