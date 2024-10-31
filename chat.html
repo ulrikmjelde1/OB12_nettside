@@ -26,12 +26,10 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/latest/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-  </script>
 
-  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCq3qHPTNlZBUMTudlrfgDqIWU9etYcESQ",
       authDomain: "ob12-nettside.firebaseapp.com",
@@ -41,77 +39,54 @@
       appId: "1:106831696001:web:cd097999c7963aa3f9fd80"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Authentication Functions
     // Make the functions globally accessible
     window.login = async function() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-    try {
+      try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log("User logged in:", userCredential.user); // Log user details on successful login
+        console.log("User logged in:", userCredential.user);
         document.getElementById('auth-status').innerText = "Logged in!";
-    } catch (error) {
-        console.error("Login error:", error); // Log error to console
+        document.getElementById('auth-container').style.display = "none"; // Hide auth container
+        document.getElementById('chat-container').style.display = "block"; // Show chat container
+        listenForMessages(); // Start listening for messages
+      } catch (error) {
+        console.error("Login error:", error);
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-    }
+      }
     };
 
     window.signUp = async function() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("User created:", userCredential.user);
         document.getElementById('auth-status').innerText = "Sign up successful!";
-    } catch (error) {
+      } catch (error) {
         console.error("Sign up error:", error);
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-    }
+      }
     };
 
     window.logout = async function() {
-    try {
+      try {
         await signOut(auth);
         document.getElementById('auth-status').innerText = "Logged out!";
-    } catch (error) {
+        document.getElementById('auth-container').style.display = "block"; // Show auth container
+        document.getElementById('chat-container').style.display = "none"; // Hide chat container
+      } catch (error) {
         console.error("Logout error:", error);
         document.getElementById('auth-status').innerText = `Error: ${error.message}`;
-    }
+      }
     };
 
-
-    // Listen for authentication state changes
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        document.getElementById('auth-container').style.display = "none";
-        document.getElementById('chat-container').style.display = "block";
-        listenForMessages();
-      } else {
-        document.getElementById('auth-container').style.display = "block";
-        document.getElementById('chat-container').style.display = "none";
-      }
-    });
-
-    // Send a message
-    async function sendMessage() {
-      const messageInput = document.getElementById('message-input');
-      const messageText = messageInput.value;
-
-      if (messageText.trim() !== "") {
-        await addDoc(collection(db, "messages"), {
-          text: messageText,
-          userId: auth.currentUser.uid,
-          timestamp: serverTimestamp()
-        });
-        messageInput.value = ""; // Clear input field after sending
-      }
-    }
-
-    // Listen for new messages in real time
     function listenForMessages() {
       const messagesContainer = document.getElementById("messages");
 
@@ -130,6 +105,18 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       });
     }
+
+    // Monitor authentication state
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById('auth-container').style.display = "none"; // Hide auth container
+        document.getElementById('chat-container').style.display = "block"; // Show chat container
+        listenForMessages(); // Start listening for messages
+      } else {
+        document.getElementById('auth-container').style.display = "block"; // Show auth container
+        document.getElementById('chat-container').style.display = "none"; // Hide chat container
+      }
+    });
   </script>
 </body>
 </html>
