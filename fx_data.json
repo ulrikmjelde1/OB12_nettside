@@ -2,43 +2,43 @@
     "USD_NOK": {
         "from_currency": "USD",
         "to_currency": "NOK",
-        "exchange_rate": "11.073",
-        "last_refreshed": "2024-11-11 13:23:12",
+        "exchange_rate": "11.065",
+        "last_refreshed": "2024-11-11 14:17:11",
         "time_zone": "UTC"
     },
     "GBP_USD": {
         "from_currency": "GBP",
         "to_currency": "USD",
-        "exchange_rate": "1.2875",
-        "last_refreshed": "2024-11-11 13:23:01",
+        "exchange_rate": "1.2873",
+        "last_refreshed": "2024-11-11 14:17:01",
         "time_zone": "UTC"
     },
     "GBP_NOK": {
         "from_currency": "GBP",
         "to_currency": "NOK",
-        "exchange_rate": "14.252",
-        "last_refreshed": "2024-11-11 13:23:12",
+        "exchange_rate": "14.245",
+        "last_refreshed": "2024-11-11 14:17:12",
         "time_zone": "UTC"
     },
     "DKK_NOK": {
         "from_currency": "DKK",
         "to_currency": "NOK",
-        "exchange_rate": "1.5797",
-        "last_refreshed": "2024-11-11 13:23:12",
+        "exchange_rate": "1.5793",
+        "last_refreshed": "2024-11-11 14:17:12",
         "time_zone": "UTC"
     },
     "SEK_NOK": {
         "from_currency": "SEK",
         "to_currency": "NOK",
-        "exchange_rate": "1.0159",
-        "last_refreshed": "2024-11-11 13:23:12",
+        "exchange_rate": "1.0168",
+        "last_refreshed": "2024-11-11 14:17:12",
         "time_zone": "UTC"
     },
     "EUR_NOK": {
         "from_currency": "EUR",
         "to_currency": "NOK",
-        "exchange_rate": "11.789",
-        "last_refreshed": "2024-11-11 13:23:12",
+        "exchange_rate": "11.788",
+        "last_refreshed": "2024-11-11 14:17:12",
         "time_zone": "UTC"
     }
 }
