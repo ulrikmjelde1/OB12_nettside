@@ -1,1 +1,9 @@
-{}
+{
+    "GBP_USD": {
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "exchange_rate": "1.3362",
+        "last_refreshed": "2025-05-07 13:14:07",
+        "time_zone": "UTC"
+    }
+}
