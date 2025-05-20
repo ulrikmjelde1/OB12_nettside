@@ -2,43 +2,43 @@
     "USD_NOK": {
         "from_currency": "USD",
         "to_currency": "NOK",
-        "exchange_rate": "10.294",
-        "last_refreshed": "2025-05-20 06:07:42",
+        "exchange_rate": "10.283",
+        "last_refreshed": "2025-05-20 07:05:26",
         "time_zone": "UTC"
     },
     "GBP_USD": {
         "from_currency": "GBP",
         "to_currency": "USD",
-        "exchange_rate": "1.3377",
-        "last_refreshed": "2025-05-20 06:07:19",
+        "exchange_rate": "1.3375",
+        "last_refreshed": "2025-05-20 07:05:31",
         "time_zone": "UTC"
     },
     "GBP_NOK": {
         "from_currency": "GBP",
         "to_currency": "NOK",
-        "exchange_rate": "13.766",
-        "last_refreshed": "2025-05-20 06:07:44",
+        "exchange_rate": "13.751",
+        "last_refreshed": "2025-05-20 07:05:45",
         "time_zone": "UTC"
     },
     "DKK_NOK": {
         "from_currency": "DKK",
         "to_currency": "NOK",
-        "exchange_rate": "1.5518",
-        "last_refreshed": "2025-05-20 06:07:44",
+        "exchange_rate": "1.5509",
+        "last_refreshed": "2025-05-20 07:05:56",
         "time_zone": "UTC"
     },
     "SEK_NOK": {
         "from_currency": "SEK",
         "to_currency": "NOK",
-        "exchange_rate": "1.0647",
-        "last_refreshed": "2025-05-20 06:07:45",
+        "exchange_rate": "1.0646",
+        "last_refreshed": "2025-05-20 07:05:56",
         "time_zone": "UTC"
     },
     "EUR_NOK": {
         "from_currency": "EUR",
         "to_currency": "NOK",
-        "exchange_rate": "11.584",
-        "last_refreshed": "2025-05-20 06:07:42",
+        "exchange_rate": "11.576",
+        "last_refreshed": "2025-05-20 07:05:56",
         "time_zone": "UTC"
     }
 }
