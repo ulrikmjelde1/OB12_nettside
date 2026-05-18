@@ -2,8 +2,8 @@
     "USD_NOK": {
         "from_currency": "USD",
         "to_currency": "NOK",
-        "exchange_rate": "9.2972",
-        "last_refreshed": "2026-05-18 09:17:54",
+        "exchange_rate": "9.2858",
+        "last_refreshed": "2026-05-18 11:23:45",
         "time_zone": "UTC"
     }
 }
